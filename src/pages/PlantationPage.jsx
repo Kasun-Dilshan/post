@@ -218,7 +218,15 @@ export function PlantationPage() {
           .cta{display:flex}
           .cta .btn--group{display:none}
           .cta .btn--invest{display:inline-flex}
-          .hero{min-height:64vh}
+          /* Mobile: make the cover/hero fill the viewport */
+          .hero{
+            min-height: 100vh;
+            min-height: 100svh;
+            align-items: flex-end;
+            padding-top: 84px;
+            padding-bottom: max(22px, env(safe-area-inset-bottom));
+            background-position: 50% 20%;
+          }
           .title{font-size:34px}
           .project h3{font-size:36px}
           .topbar .items{gap:10px}
