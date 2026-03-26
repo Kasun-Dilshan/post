@@ -741,7 +741,7 @@ export function GroupHomePage() {
               />
             </div>
             <div className="team-meta">
-              <h3>MERVYN REXTER</h3>
+              <h3>Hons.Dr.MERVYN REXTER</h3>
               <div className="team-role">Founder &amp; Group Chairman</div>
               <p>
                 Mervyn Rexter, the Group Chairman of Serendib Group, has over 30 years of experience
