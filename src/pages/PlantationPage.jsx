@@ -213,8 +213,11 @@ export function PlantationPage() {
           #footer .footer-links{grid-template-columns:1fr 1fr}
         }
         @media (max-width: 740px){
-          nav ul,.cta{display:none}
-          .menu{display:block}
+          nav ul{display:none}
+          .menu{display:none}
+          .cta{display:flex}
+          .cta .btn--group{display:none}
+          .cta .btn--invest{display:inline-flex}
           .hero{min-height:64vh}
           .title{font-size:34px}
           .project h3{font-size:36px}
@@ -236,10 +239,10 @@ export function PlantationPage() {
             </a>
 
             <div className="cta">
-              <a className="btn" href="/">
+              <a className="btn btn--group" href="/">
                 Group Home
               </a>
-              <a className="btn accent" href="/investments">
+              <a className="btn accent btn--invest" href="/investments">
                 Investment Plans
               </a>
             </div>
