@@ -556,18 +556,7 @@ export function GroupHomePage() {
             <li>
               <a href="#presence">Global</a>
             </li>
-            <li>
-              <a
-                href="/contact"
-                className="nav-cta"
-                onClick={(e) => {
-                  e.preventDefault()
-                  navigate('/contact')
-                }}
-              >
-                Contact Us
-              </a>
-            </li>
+           
           </ul>
           <button className="hamburger" id="hamburger" aria-label="Open menu">
             <span />
