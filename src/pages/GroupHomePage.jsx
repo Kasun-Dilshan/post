@@ -652,7 +652,7 @@ export function GroupHomePage() {
         <div className="section-header">
           <div className="section-tag">OUR PORTFOLIO</div>
           <h2 className="section-title">
-            Seven Companies.
+            Five Companies.
             <br />
             <span className="gradient-text">One Vision.</span>
           </h2>
