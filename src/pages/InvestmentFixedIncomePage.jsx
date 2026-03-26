@@ -21,19 +21,14 @@ export function InvestmentFixedIncomePage() {
 
   const [amount, setAmount] = useState('')
   const [term, setTerm] = useState('')
-  const [monthly, setMonthly] = useState(0)
   const [animatedMonthly, setAnimatedMonthly] = useState(0)
 
-  useEffect(() => {
+  const monthly = useMemo(() => {
     const a = Number(amount)
     const t = Number(term)
-    if (!a || !t) {
-      setMonthly(0)
-      setAnimatedMonthly(0)
-      return
-    }
-    if (a >= 50000000 && t === 8) setMonthly(a * 0.05)
-    else setMonthly((a / 100000) * baseIncome[t])
+    if (!a || !t) return 0
+    if (a >= 50000000 && t === 8) return a * 0.05
+    return (a / 100000) * baseIncome[t]
   }, [amount, term, baseIncome])
 
   useEffect(() => {

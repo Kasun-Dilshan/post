@@ -6,6 +6,7 @@ import { InvestmentFixedIncomePage } from './pages/InvestmentFixedIncomePage.jsx
 import { GreenSavingPlansPage } from './pages/GreenSavingPlansPage.jsx'
 import { GreenSilverSavingPlanPage } from './pages/GreenSilverSavingPlanPage.jsx'
 import { GoldSavingPlanPage } from './pages/GoldSavingPlanPage.jsx'
+import { ContactUsPage } from './pages/ContactUsPage.jsx'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/investments/green" element={<GreenSavingPlansPage />} />
         <Route path="/investments/silver" element={<GreenSilverSavingPlanPage />} />
         <Route path="/investments/gold" element={<GoldSavingPlanPage />} />
+        <Route path="/contact" element={<ContactUsPage />} />
 
         {/* Legacy static .html deep links */}
         <Route path="/index.html" element={<Navigate to="/" replace />} />

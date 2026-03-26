@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -286,7 +286,6 @@ function useGroupInteractions() {
     onCompaniesScrollSnap()
 
     // Autoplay disabled to keep Plantation card first.
-    const track = inner?.parentElement
 
     let startX = 0
     const onTouchStart = (e) => {
@@ -454,10 +453,10 @@ export function GroupHomePage() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
-  const onOpenPlantation = () => {
+  const onOpenPlantation = useCallback(() => {
     setLoading(true)
     setTimeout(() => navigate('/plantation'), 700)
-  }
+  }, [navigate])
 
   const companies = useMemo(
     () => [
@@ -533,7 +532,7 @@ export function GroupHomePage() {
         stats: ['Export Quality', 'Fair Trade'],
       },
     ],
-    [navigate],
+    [onOpenPlantation],
   )
 
   return (
@@ -558,7 +557,14 @@ export function GroupHomePage() {
               <a href="#presence">Global</a>
             </li>
             <li>
-              <a href="#footer" className="nav-cta">
+              <a
+                href="/contact"
+                className="nav-cta"
+                onClick={(e) => {
+                  e.preventDefault()
+                  navigate('/contact')
+                }}
+              >
                 Contact Us
               </a>
             </li>
