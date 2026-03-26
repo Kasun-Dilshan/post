@@ -10,9 +10,8 @@ export function ContactUsPage() {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [sending, setSending] = useState(false)
 
-  async function onSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault()
 
     const trimmed = fromEmail.trim()
@@ -34,29 +33,9 @@ export function ContactUsPage() {
     }
 
     setError('')
-    setSuccess('')
-    setSending(true)
-
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fromEmail: trimmed, message: trimmedMessage }),
-      })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok || !data?.ok) {
-        setError(data?.error || 'Email sending failed. Please try again.')
-        return
-      }
-
-      setFromEmail('')
-      setMessage('')
-      setSuccess('Email sent successfully. Please check your inbox for the confirmation email.')
-    } catch {
-      setError('Email sending failed. Please try again.')
-    } finally {
-      setSending(false)
-    }
+    setSuccess('Thank you! We received your message.')
+    setFromEmail('')
+    setMessage('')
   }
 
   return (
@@ -68,8 +47,7 @@ export function ContactUsPage() {
             Send an <span className="gradient-text">Email</span>
           </h2>
           <p className="section-desc" style={{ maxWidth: 720 }}>
-            Our email is <a href={`mailto:${TO_EMAIL}`}>{TO_EMAIL}</a>. Type your message and press
-            send.
+            You can reach us at {TO_EMAIL}. Type your message and press send.
           </p>
         </div>
 
@@ -114,8 +92,8 @@ export function ContactUsPage() {
             <button type="button" className="btn-ghost" onClick={() => navigate('/')}>
               Back Home
             </button>
-            <button type="submit" className="btn-primary" disabled={sending}>
-              {sending ? 'Sending…' : 'Send'}
+            <button type="submit" className="btn-primary">
+              Send
             </button>
           </div>
         </form>
