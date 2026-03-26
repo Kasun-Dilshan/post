@@ -326,9 +326,7 @@ export function PlantationPage() {
                 bananas, watermelons, and bird chilli.
               </p>
               <p>Welcome to our digital space, and feel free to browse with a smile!</p>
-              <a className="btn primary" href="https://serendibgroups.com/about-us-2/" target="_blank" rel="noreferrer">
-                About us
-              </a>
+             
             </div>
           </div>
         </div>
