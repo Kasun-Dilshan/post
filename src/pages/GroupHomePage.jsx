@@ -272,18 +272,21 @@ function useGroupInteractions() {
     nextBtn?.addEventListener('click', onNext)
     dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)))
 
-    const startAutoplay = () => {
-      if (autoTimer) clearInterval(autoTimer)
-      if (totalCards === 0) return
-      autoTimer = setInterval(() => goTo((current + 1) % totalCards), 4000)
+    // Always keep the first (Plantation) card visible when the user scrolls the page.
+    // This prevents the carousel from "remembering" a later card when revisiting the section.
+    goTo(0)
+    const companiesSection = document.getElementById('companies')
+    const onCompaniesScrollSnap = () => {
+      if (!companiesSection) return
+      const rect = companiesSection.getBoundingClientRect()
+      const inView = rect.top < window.innerHeight * 0.8 && rect.bottom > window.innerHeight * 0.2
+      if (inView) goTo(0)
     }
-    startAutoplay()
+    window.addEventListener('scroll', onCompaniesScrollSnap, { passive: true })
+    onCompaniesScrollSnap()
 
+    // Autoplay disabled to keep Plantation card first.
     const track = inner?.parentElement
-    const onEnter = () => autoTimer && clearInterval(autoTimer)
-    const onLeave = () => startAutoplay()
-    track?.addEventListener('mouseenter', onEnter)
-    track?.addEventListener('mouseleave', onLeave)
 
     let startX = 0
     const onTouchStart = (e) => {
@@ -432,8 +435,7 @@ function useGroupInteractions() {
       prevBtn?.removeEventListener('click', onPrev)
       nextBtn?.removeEventListener('click', onNext)
       if (autoTimer) clearInterval(autoTimer)
-      track?.removeEventListener('mouseenter', onEnter)
-      track?.removeEventListener('mouseleave', onLeave)
+      window.removeEventListener('scroll', onCompaniesScrollSnap)
       inner?.removeEventListener('touchstart', onTouchStart)
       inner?.removeEventListener('touchend', onTouchEnd)
       tiltHandlers.forEach(([card, onMove, onLeaveCard]) => {
