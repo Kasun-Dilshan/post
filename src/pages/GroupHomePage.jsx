@@ -931,6 +931,20 @@ export function GroupHomePage() {
               />
             </a>
             <p>Building tomorrow's world, today.</p>
+            <div className="footer-contact">
+              <div className="footer-contact-item">
+                <span className="footer-contact-label">Hotline</span>
+                <a className="footer-contact-value" href="tel:0112863703">
+                  0112 863 703
+                </a>
+              </div>
+              <div className="footer-contact-item">
+                <span className="footer-contact-label">E-Mail</span>
+                <a className="footer-contact-value" href="mailto:info@serendibgroups.com">
+                  info@serendibgroups.com
+                </a>
+              </div>
+            </div>
             <div className="footer-socials">
               <a href="#" aria-label="LinkedIn">
                 in

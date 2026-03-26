@@ -150,6 +150,18 @@ export function PlantationPage() {
           align-items:start;
         }
         #footer .footer-brand p{color:rgba(255,255,255,.85);line-height:1.7;margin:12px 0 0}
+        #footer .footer-contact{display:grid;gap:10px;margin:14px 0 0}
+        #footer .footer-contact-label{
+          display:block;
+          font-size:12px;
+          font-weight:900;
+          letter-spacing:1.2px;
+          text-transform:uppercase;
+          color:rgba(255,255,255,.78);
+          margin-bottom:2px;
+        }
+        #footer .footer-contact-value{color:#fff;font-weight:800;font-size:14px}
+        #footer .footer-contact-value:hover{text-decoration:underline}
         #footer .footer-logo-text{
           display:inline-block;
           color:#fff;
@@ -482,6 +494,20 @@ export function PlantationPage() {
               <span className="footer-logo-text">SERENDIB GROUP OF COMPANIES</span>
             </a>
             <p>Building tomorrow's world, today.</p>
+            <div className="footer-contact">
+              <div className="footer-contact-item">
+                <span className="footer-contact-label">Hotline</span>
+                <a className="footer-contact-value" href="tel:0112863703">
+                  0112 863 703
+                </a>
+              </div>
+              <div className="footer-contact-item">
+                <span className="footer-contact-label">E-Mail</span>
+                <a className="footer-contact-value" href="mailto:info@serendibgroups.com">
+                  info@serendibgroups.com
+                </a>
+              </div>
+            </div>
             <div className="footer-socials">
               <a href="#" aria-label="LinkedIn">
                 in
