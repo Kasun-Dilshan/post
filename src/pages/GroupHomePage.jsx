@@ -961,39 +961,7 @@ export function GroupHomePage() {
         </div>
       </section>
 
-      <section id="presence">
-        <div className="section-inner">
-          <div className="presence-text">
-            <div className="section-tag reveal-left">GLOBAL PRESENCE</div>
-            <h2 className="section-title reveal-left">
-              Connected Across
-              <br />
-              <span className="gradient-text">Continents</span>
-            </h2>
-            <p className="reveal-left" style={{ color: 'var(--text-2)' }}>
-              A growing footprint supported by partnerships and operations across key regions.
-            </p>
-            <ul className="presence-list reveal-left">
-              <li>
-                <span className="dot-green" /> Sri Lanka
-              </li>
-              <li>
-                <span className="dot-blue" /> Europe
-              </li>
-              <li>
-                <span className="dot-purple" /> Middle East
-              </li>
-              <li>
-                <span className="dot-orange" /> Asia-Pacific
-              </li>
-            </ul>
-          </div>
-
-          <div className="world-map-wrapper reveal-right">
-            <canvas id="map-canvas" width="700" height="400" />
-          </div>
-        </div>
-      </section>
+     
 
       <footer id="footer">
         <div className="footer-inner">
