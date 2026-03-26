@@ -468,7 +468,7 @@ export function GroupHomePage() {
         alt: 'Serendib Green Plantation',
         tag: 'Agriculture',
         title: 'Serendib Green Plantation',
-        desc: 'Sustainable cultivation and export of premium Ceylon tea, rubber, and organic commodities.',
+        desc: 'Sustainable cultivation and export Vannila.',
         stats: ['Est. 1998', 'Organic Certified'],
         onClick: onOpenPlantation,
       },
@@ -479,7 +479,7 @@ export function GroupHomePage() {
         alt: 'Serendib Travel and Tours',
         tag: 'Tourism',
         title: 'Serendib Travel & Tours',
-        desc: 'Curated luxury travel experiences and premier destination management across Sri Lanka.',
+        desc: 'Curated luxury travel experiences.',
         stats: ['Global Network', 'Award Winning'],
       },
       {
@@ -543,8 +543,8 @@ export function GroupHomePage() {
       <nav id="navbar">
         <div className="nav-inner">
           <a href="#hero" className="nav-logo">
-            <span style={{ fontWeight: 800, letterSpacing: '0.08em' }}>
-              SERENDIB GROUP OF COMPANIES
+            <span style={{ fontWeight: 800, letterSpacing: '0.08em', color: 'var(--accent-1)' }}>
+              SERENDIB GREEN PLANTATION
             </span>
           </a>
           <ul className="nav-links" id="nav-links">
