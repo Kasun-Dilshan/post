@@ -768,9 +768,7 @@ export function GroupHomePage() {
                 <span>Culture of Integrity</span>
                 <span>Community Development Focus</span>
               </div>
-              <a href="mailto:perera@serendibgroup.com" className="team-email">
-                perera@serendibgroup.com
-              </a>
+             
             </div>
           </article>
 
@@ -811,9 +809,7 @@ export function GroupHomePage() {
                 <span>New Business Models</span>
                 <span>Innovation &amp; Growth</span>
               </div>
-              <a href="mailto:fernando@serendibgroup.com" className="team-email">
-                fernando@serendibgroup.com
-              </a>
+            
             </div>
           </article>
 
@@ -854,9 +850,7 @@ export function GroupHomePage() {
                 <span>Staff Well-being Focus</span>
                 <span>Eco-Friendly Practices</span>
               </div>
-              <a href="mailto:silva@serendibgroup.com" className="team-email">
-                silva@serendibgroup.com
-              </a>
+              
             </div>
           </article>
 
@@ -895,45 +889,11 @@ export function GroupHomePage() {
                 <span>Led Travel Growth</span>
                 <span>Competitive Sector Leadership</span>
               </div>
-              <a href="mailto:ratnayake@serendibgroup.com" className="team-email">
-                ratnayake@serendibgroup.com
-              </a>
+             
             </div>
           </article>
 
-          <article className="team-card reveal-up">
-            <div className="team-avatar photo">
-              <img
-                src="/site-assets/anushka.png"
-                alt="Anushka Jayashan"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div className="team-meta">
-              <h3>ANUSHKA JAYASHAN</h3>
-              <div className="team-role">Director - Agriculture</div>
-              <p>
-                Growth-focused business leader in agriculture and exports with practical expertise
-                in scaling regional supply networks and improving farm-to-market efficiency.
-              </p>
-              <h4>Core Expertise</h4>
-              <div className="team-tags">
-                <span>Agriculture Operations</span>
-                <span>Export Development</span>
-                <span>Business Expansion</span>
-              </div>
-              <h4>Notable Achievements</h4>
-              <div className="team-badges">
-                <span>Regional Market Expansion</span>
-                <span>Sustainable Farming Initiatives</span>
-                <span>Emerging Leader Award 2024</span>
-              </div>
-              <a href="mailto:perera@serendibgroup.com" className="team-email">
-                perera@serendibgroup.com
-              </a>
-            </div>
-          </article>
+          
         </div>
 
         <div className="team-impact reveal-up">
