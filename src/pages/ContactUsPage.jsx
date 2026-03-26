@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/group.css'
 
@@ -9,14 +9,10 @@ export function ContactUsPage() {
   const [fromEmail, setFromEmail] = useState('')
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [sending, setSending] = useState(false)
 
-  const mailtoHref = useMemo(() => {
-    const subject = 'Contact Serendib Groups'
-    const body = `From: ${fromEmail || '(not provided)'}\n\nMessage:\n${message || '(no message)'}`
-    return `mailto:${TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-  }, [fromEmail, message])
-
-  function onSubmit(e) {
+  async function onSubmit(e) {
     e.preventDefault()
 
     const trimmed = fromEmail.trim()
@@ -38,7 +34,29 @@ export function ContactUsPage() {
     }
 
     setError('')
-    window.location.href = mailtoHref
+    setSuccess('')
+    setSending(true)
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fromEmail: trimmed, message: trimmedMessage }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok || !data?.ok) {
+        setError(data?.error || 'Email sending failed. Please try again.')
+        return
+      }
+
+      setFromEmail('')
+      setMessage('')
+      setSuccess('Email sent successfully. Please check your inbox for the confirmation email.')
+    } catch {
+      setError('Email sending failed. Please try again.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -50,7 +68,7 @@ export function ContactUsPage() {
             Send an <span className="gradient-text">Email</span>
           </h2>
           <p className="section-desc" style={{ maxWidth: 720 }}>
-            Our email is <a href={`mailto:${TO_EMAIL}`}>{TO_EMAIL}</a>. Enter your email and press
+            Our email is <a href={`mailto:${TO_EMAIL}`}>{TO_EMAIL}</a>. Type your message and press
             send.
           </p>
         </div>
@@ -85,6 +103,7 @@ export function ContactUsPage() {
             required
           />
 
+          {success ? <div className="contact-success">{success}</div> : null}
           {error ? (
             <div className="contact-error" role="alert">
               {error}
@@ -95,8 +114,8 @@ export function ContactUsPage() {
             <button type="button" className="btn-ghost" onClick={() => navigate('/')}>
               Back Home
             </button>
-            <button type="submit" className="btn-primary">
-              Send
+            <button type="submit" className="btn-primary" disabled={sending}>
+              {sending ? 'Sending…' : 'Send'}
             </button>
           </div>
         </form>

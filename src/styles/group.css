@@ -1468,6 +1468,11 @@ footer {
   box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.15);
 }
 .contact-error { margin-top: 0.75rem; color: #b91c1c; font-weight: 600; }
+.contact-success {
+  margin-top: 0.75rem;
+  color: #166534;
+  font-weight: 700;
+}
 .contact-actions {
   margin-top: 1.25rem;
   display: flex;
