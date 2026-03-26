@@ -85,6 +85,15 @@ app.post('/api/contact', async (req, res) => {
     res.json({ ok: true })
   } catch (err) {
     console.error(err)
+    const msg = err instanceof Error ? err.message : ''
+    if (msg.startsWith('Missing environment variable:')) {
+      res.status(500).json({
+        ok: false,
+        error: `${msg}. Create a .env file (see .env.example) and restart the server.`,
+      })
+      return
+    }
+
     res.status(500).json({ ok: false, error: 'Email sending failed. Please try again later.' })
   }
 })
