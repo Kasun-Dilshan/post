@@ -1,0 +1,605 @@
+export function PlantationPage() {
+  return (
+    <>
+      <style>{`
+        :root{
+          --bg:#F8FBF3;
+          --text:#263037;
+          --muted:#596A5A;
+          --primary:#354E33;
+          --secondary:#798D7A;
+          --accent:#40B54C;
+          --accent-2:#8BEA6F;
+          --card:#ffffff;
+          --shadow: 0 10px 30px rgba(0,0,0,.08);
+          --radius: 18px;
+        }
+        *{box-sizing:border-box}
+        html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+        html{scroll-behavior:smooth}
+        a{color:inherit;text-decoration:none}
+        .container{max-width:1200px;margin:0 auto;padding:0 16px}
+        :focus-visible{outline:3px solid rgba(64,181,76,.45);outline-offset:3px;border-radius:10px}
+
+        .topbar{background:var(--accent);color:#fff;font-size:14px}
+        .topbar .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;flex-wrap:wrap}
+        .topbar .items{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+        .topbar .item{display:flex;gap:8px;align-items:center;white-space:nowrap;opacity:.95}
+        .topbar .social{display:flex;gap:10px;align-items:center}
+        .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.18)}
+
+        header{position:sticky;top:0;z-index:20;background:rgba(248,251,243,.92);backdrop-filter: blur(10px);border-bottom:1px solid rgba(53,78,51,.12)}
+        .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}
+        .brand{display:flex;align-items:center;gap:12px}
+        .brand img{height:46px;width:auto}
+        .brand .wordmark{display:flex;flex-direction:column;line-height:1}
+        .brand .wordmark strong{font-size:14px;letter-spacing:.8px;text-transform:uppercase;color:var(--primary)}
+        .brand .wordmark span{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.2px}
+        nav ul{list-style:none;margin:0;padding:0;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+        nav a{font-size:14px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;padding:10px 8px;border-radius:10px}
+        nav a:hover{background:rgba(53,78,51,.08)}
+        .cta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid rgba(53,78,51,.35);background:#fff;color:var(--primary);padding:10px 14px;border-radius:999px;font-weight:700;font-size:13px;text-transform:uppercase}
+        .btn.primary{background:var(--primary);color:#fff;border-color:transparent}
+        .btn.accent{background:var(--accent);color:#fff;border-color:transparent}
+        .btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(0,0,0,.10)}
+        .btn{transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease}
+
+        .menu{display:none}
+        .menu summary{list-style:none;cursor:pointer;border:1px solid rgba(53,78,51,.25);border-radius:12px;padding:10px 12px;background:#fff;font-weight:900;letter-spacing:.6px;text-transform:uppercase;font-size:12px;color:var(--primary)}
+        .menu summary::-webkit-details-marker{display:none}
+        .menu-panel{margin-top:10px;background:#fff;border:1px solid rgba(53,78,51,.14);border-radius:16px;box-shadow:var(--shadow);padding:10px}
+        .menu-panel a{display:block;padding:10px 10px;border-radius:12px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;font-size:13px}
+        .menu-panel a:hover{background:rgba(53,78,51,.08)}
+
+        .hero{
+          min-height: 62vh;
+          display:flex;
+          align-items:flex-end;
+          background:
+            linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.30) 55%, rgba(248,251,243,1) 100%),
+            url("https://serendibgroups.com/wp-content/uploads/2024/11/slider_1.jpg") center/cover no-repeat;
+          padding: 70px 0 26px;
+        }
+        .hero .inner{padding: 0 0 18px}
+        .hero .kicker{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px}
+        .hero h1{margin:14px 0 6px;color:#fff;font-size:56px;line-height:1.05;letter-spacing:6px;text-transform:uppercase}
+        .hero h2{margin:0;color:#fff;font-size:28px;letter-spacing:6px;text-transform:uppercase;font-weight:700;opacity:.95}
+        .hero .actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+        .hero .sub{margin-top:14px;max-width:720px;color:rgba(255,255,255,.85);font-weight:600;line-height:1.7}
+
+        .stats{
+          margin-top:20px;
+          display:grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap:12px;
+        }
+        .stat{
+          background:rgba(255,255,255,.10);
+          border:1px solid rgba(255,255,255,.16);
+          border-radius:16px;
+          padding:12px 12px;
+          backdrop-filter: blur(8px);
+        }
+        .stat strong{display:block;color:#fff;font-size:18px;letter-spacing:.4px}
+        .stat span{display:block;color:rgba(255,255,255,.78);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-top:4px}
+
+        section{padding:52px 0}
+        .grid-2{display:grid;grid-template-columns: 1.1fr .9fr;gap:26px;align-items:center}
+        .grid-2.reverse{grid-template-columns: .9fr 1.1fr}
+        .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+        .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:7px 12px;border-radius:999px;background:rgba(53,78,51,.10);color:var(--primary);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.8px}
+        .title{margin:12px 0 10px;font-size:40px;line-height:1.08;text-transform:uppercase;color:var(--primary)}
+        .title .hl{color:var(--accent)}
+        p{color:var(--muted);line-height:1.75;margin:0 0 12px}
+        .media{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);position:relative}
+        .media img{width:100%;height:auto;display:block}
+        .media .badge-img{position:absolute;right:14px;top:14px;width:118px;aspect-ratio:1/1;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.22)}
+
+        .marquee{padding:0;background:transparent}
+        .marquee .bar{background:rgba(53,78,51,.08);border-top:1px solid rgba(53,78,51,.10);border-bottom:1px solid rgba(53,78,51,.10);overflow:hidden}
+        .marquee .track{display:flex;gap:22px;white-space:nowrap;animation: scroll 18s linear infinite;padding:14px 0}
+        .marquee .chip{font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(--primary);font-size:20px}
+        @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+        @media (prefers-reduced-motion: reduce){
+          .marquee .track{animation:none}
+          .btn{transition:none}
+        }
+
+        .projects{padding-top:20px}
+        .project{
+          border-radius: 28px;
+          overflow:hidden;
+          box-shadow: var(--shadow);
+          margin: 18px 0;
+          background:#111;
+          color:#fff;
+          position:relative;
+        }
+        .project::before{
+          content:"";
+          position:absolute;inset:0;
+          background: linear-gradient(90deg, rgba(0,0,0,.70), rgba(0,0,0,.25));
+          z-index:1;
+        }
+        .project .bg{position:absolute;inset:0;background:center/cover no-repeat;filter:saturate(1.02);transform:scale(1.02)}
+        .project .content{position:relative;z-index:2;display:grid;grid-template-columns: 1fr 1fr;gap:18px;align-items:center;padding:42px 26px}
+        .project h3{margin:0;font-size:44px;line-height:1.05}
+        .project p{color:rgba(255,255,255,.82);margin:0}
+        .project .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+        .tag{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);font-weight:900;font-size:12px;letter-spacing:.6px;text-transform:uppercase}
+        .project .go{margin-left:auto}
+
+        .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+        .section-head p{margin:0;max-width:720px}
+        .soft{background:rgba(53,78,51,.05);border-top:1px solid rgba(53,78,51,.08);border-bottom:1px solid rgba(53,78,51,.08)}
+
+        #footer{
+          padding:48px 0 18px;
+          background: linear-gradient(180deg, rgba(53,78,51,1) 0%, rgba(35,60,35,1) 100%);
+          color:#fff;
+          margin-top:30px;
+        }
+        #footer .footer-inner{
+          max-width:1200px;
+          margin:0 auto;
+          padding:0 16px;
+          display:grid;
+          grid-template-columns: 1fr 2.2fr;
+          gap:24px;
+          align-items:start;
+        }
+        #footer .footer-brand p{color:rgba(255,255,255,.85);line-height:1.7;margin:12px 0 0}
+        #footer .footer-logo-text{
+          display:inline-block;
+          color:#fff;
+          font-weight:1000;
+          letter-spacing:1.2px;
+          text-transform:uppercase;
+          font-size:16px;
+          line-height:1.2;
+        }
+        #footer .footer-socials{display:flex;gap:10px;margin-top:14px}
+        #footer .footer-socials a{
+          width:36px;height:36px;border-radius:10px;
+          display:inline-flex;align-items:center;justify-content:center;
+          background:rgba(255,255,255,.12);
+          border:1px solid rgba(255,255,255,.18);
+          font-weight:800;
+        }
+        #footer .footer-socials a:hover{background:rgba(255,255,255,.18)}
+
+        #footer .footer-links{
+          display:grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap:18px;
+        }
+        #footer .footer-col h5{margin:0 0 10px;font-size:14px;letter-spacing:.6px;text-transform:uppercase}
+        #footer .footer-col p{margin:0 0 12px;color:rgba(255,255,255,.85);line-height:1.6;font-size:14px}
+        #footer .footer-col ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+        #footer .footer-col a{color:rgba(255,255,255,.88);font-size:14px}
+        #footer .footer-col a:hover{color:#fff;text-decoration:underline}
+
+        #footer .footer-map iframe{
+          width:100%;
+          height:220px;
+          border:0;
+          border-radius:16px;
+          box-shadow:0 10px 30px rgba(0,0,0,.18);
+        }
+
+        #footer .footer-bottom{
+          max-width:1200px;
+          margin:22px auto 0;
+          padding:14px 16px 0;
+          border-top:1px solid rgba(255,255,255,.18);
+          display:flex;
+          justify-content:space-between;
+          gap:10px;
+          flex-wrap:wrap;
+          color:rgba(255,255,255,.82);
+          font-size:13px;
+          font-weight:600;
+        }
+        #footer .footer-bottom a{color:rgba(255,255,255,.9);text-decoration:underline}
+
+        @media (max-width: 980px){
+          .grid-2,.grid-2.reverse{grid-template-columns:1fr}
+          .hero h1{font-size:42px;letter-spacing:5px}
+          .hero h2{font-size:22px;letter-spacing:4px}
+          .stats{grid-template-columns:1fr 1fr}
+          .project .content{grid-template-columns:1fr}
+          #footer .footer-inner{grid-template-columns:1fr}
+          #footer .footer-links{grid-template-columns:1fr 1fr}
+        }
+        @media (max-width: 740px){
+          nav ul,.cta{display:none}
+          .menu{display:block}
+          .hero{min-height:64vh}
+          .title{font-size:34px}
+          .project h3{font-size:36px}
+          .topbar .items{gap:10px}
+        }
+      `}</style>
+
+      <div className="topbar">
+        <div className="container">
+          <div className="row">
+            <div className="items">
+              <div className="item pill">
+                <span>Phone</span>
+                <strong>+94 74 41 10 417</strong>
+              </div>
+              <div className="item pill">
+                <span>Email</span>
+                <strong>info@serendibgroups.com</strong>
+              </div>
+            </div>
+            <div className="social">
+              <a
+                className="pill"
+                href="https://web.facebook.com/profile.php?id=100063968831924&_rdc=1&_rdr#"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Facebook
+              </a>
+              <a className="pill" href="#" aria-label="X">
+                X
+              </a>
+              <a className="pill" href="#" aria-label="Instagram">
+                Instagram
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <header>
+        <div className="container">
+          <div className="nav" aria-label="Primary navigation">
+            <a className="brand" href="/" aria-label="Serendib Group home">
+              <img src="/site-assets/serendib_main_logo.png" alt="Serendib Group logo" />
+              <div className="wordmark">
+                <strong>Serendib</strong>
+                <span>Green Plantation</span>
+              </div>
+            </a>
+
+            <div className="cta">
+              <a className="btn" href="/">
+                Group Home
+              </a>
+              <a className="btn accent" href="/investments">
+                Investment Plans
+              </a>
+            </div>
+
+            <details className="menu">
+              <summary>Menu</summary>
+              <div className="menu-panel" role="navigation" aria-label="Mobile navigation">
+                <a href="#about">About</a>
+                <a href="#overview">Overview</a>
+                <a href="#mission">Mission</a>
+                <a href="#projects">Projects</a>
+                <a href="/investments">Investment Plans</a>
+                <a href="/">Group Home</a>
+              </div>
+            </details>
+          </div>
+        </div>
+      </header>
+
+      <section className="hero" id="hero">
+        <div className="container">
+          <div className="inner">
+            <div className="kicker">Welcome to</div>
+            <h1>Serendib</h1>
+            <h2>Green Plantation</h2>
+            <p className="sub">
+              Sustainable cultivation, eco-friendly plantations, and premium produce—rooted in Sri
+              Lanka’s agricultural heritage and built for a greener future.
+            </p>
+
+            <div className="stats" aria-label="Highlights">
+              <div className="stat">
+                <strong>Sustainable</strong>
+                <span>Plantation Practices</span>
+              </div>
+              <div className="stat">
+                <strong>Integrated</strong>
+                <span>Crops &amp; Value Chain</span>
+              </div>
+              <div className="stat">
+                <strong>Local</strong>
+                <span>Community Focus</span>
+              </div>
+              <div className="stat">
+                <strong>Quality</strong>
+                <span>Export-ready Produce</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="soft">
+        <div className="container">
+          <div className="grid-2">
+            <div className="media">
+              <img
+                src="https://serendibgroups.com/wp-content/uploads/2025/04/2-1-606x403.png"
+                alt="Plantation image"
+              />
+              <div className="badge-img">
+                <img
+                  src="https://serendibgroups.com/wp-content/uploads/2024/11/3-1-337x337.png"
+                  alt="Badge image"
+                />
+              </div>
+            </div>
+            <div className="card">
+              <div className="eyebrow">Who We Are</div>
+              <div className="title">
+                SERENDIB <span className="hl">GREEN PLANTATION</span>
+              </div>
+              <p>
+                As a premier entity within the prestigious Serendib Group, Serendib Green Plantation
+                is at the forefront of sustainable cultivation and green plantation practices. Our
+                deep-rooted commitment to environmental stewardship and innovative agricultural
+                techniques enable us to transform land into flourishing, eco-friendly plantations.
+                Our focus on sustainability not only enhances the health of our planet but also
+                delivers superior-quality products and services to our clients.
+              </p>
+              <p>
+                Rooted in the heart of Sri Lanka’s agricultural heritage, we are a pioneer in
+                sustainable agriculture and plantations, specialising in the production of gherkins,
+                bananas, watermelons, and bird chilli.
+              </p>
+              <p>Welcome to our digital space, and feel free to browse with a smile!</p>
+              <a className="btn primary" href="https://serendibgroups.com/about-us-2/" target="_blank" rel="noreferrer">
+                About us
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview">
+        <div className="container">
+          <div className="grid-2 reverse">
+            <div className="card">
+              <div className="title">Company Overview</div>
+              <p>
+                The area is used by Serendib Green Plantation, one of the leading regional
+                plantation enterprises, to cultivate and produce gherkins, bananas, watermelons, and
+                bird chilli. After our company was privatised in 2024, we proceeded to change it
+                from a commodity-based enterprise to a more profitable, broad, and long-lasting
+                company.
+              </p>
+              <p>
+                With a forward-thinking approach, we have dabbled in developing a varied company
+                portfolio that includes speciality vanilla, sustainable development, and
+                non-traditional crops, among other things.
+              </p>
+            </div>
+            <div className="media">
+              <img
+                src="https://serendibgroups.com/wp-content/uploads/2024/11/4-1-606x403.png"
+                alt="Company overview image"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="mission" className="soft">
+        <div className="container">
+          <div className="grid-2">
+            <div className="media">
+              <img
+                src="https://serendibgroups.com/wp-content/uploads/2024/11/4-1-606x403.png"
+                alt="Mission image"
+              />
+            </div>
+            <div className="card">
+              <div className="title">
+                Our <span className="hl">Mission</span>
+              </div>
+              <p>
+                Serendib Green Plantation (Pvt) Ltd., a premier entity within the prestigious
+                Serendib Group, is at the forefront of sustainable cultivation and green plantation
+                practices.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="marquee" aria-label="Investment opportunities marquee">
+        <div className="bar">
+          <div className="container">
+            <div className="track" aria-hidden="true">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <span key={i} className="chip">
+                  INVESTMENT OPPORTUNITIES
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="projects" id="projects">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">What We Grow</div>
+              <div className="title" style={{ marginBottom: 0 }}>
+                Our <span className="hl">Projects</span>
+              </div>
+            </div>
+            <p>
+              From specialty vanilla to staple fruits and Sri Lankan spices—our portfolio is built
+              on sustainability, quality, and long-term value creation.
+            </p>
+          </div>
+
+          {[
+            {
+              title: 'Vanilla',
+              bg: 'https://serendibgroups.com/wp-content/uploads/2024/11/3-1.png',
+              desc: 'Vanilla is a flavorful spice derived from the pods of the vanilla orchid (genus Vanilla), primarily Vanilla planifolia.',
+              tags: ['Specialty crop', 'High value'],
+            },
+            {
+              title: 'Banana',
+              bg: 'https://serendibgroups.com/wp-content/uploads/2024/11/banana-scaled-1.jpg',
+              desc: 'Bananas are a tropical fruit from the Musa genus, known for their elongated shape, soft texture, and sweet flavor.',
+              tags: ['Tropical fruit', 'Quality focused'],
+            },
+            {
+              title: 'Watermelon',
+              bg: 'https://serendibgroups.com/wp-content/uploads/2024/11/DALL%C2%B7E-2024-10-25-14.29.43-A-vibrant-and-juicy-watermelon-sliced-open-to-reveal-its-bright-red-flesh-and-black-seeds-set-on-a-light-wooden-table-with-a-rustic-background.-The-w-1-e1746045831372.webp',
+              desc: "Watermelon is a refreshing, juicy fruit with a thick green rind and sweet, red or pink flesh filled with black seeds.",
+              tags: ['Seasonal', 'High yield'],
+            },
+            {
+              title: 'Gherkins',
+              bg: 'https://serendibgroups.com/wp-content/uploads/2024/11/gherkins-e1746045903545.jpg',
+              desc: 'Gherkins are small, crisp cucumbers, typically harvested when immature and pickled in brine or vinegar.',
+              tags: ['Export ready', 'Processing'],
+            },
+            {
+              title: 'Spices',
+              bg: 'https://serendibgroups.com/wp-content/uploads/2025/04/6.png',
+              desc: 'Sri Lankan spices are renowned for their rich, aromatic flavors and are a key element in the country’s vibrant cuisine.',
+              tags: ['Sri Lanka', 'Aromatic'],
+            },
+          ].map((p) => (
+            <article key={p.title} className="project">
+              <div className="bg" style={{ backgroundImage: `url("${p.bg}")` }} />
+              <div className="content">
+                <div>
+                  <h3>{p.title}</h3>
+                  <p>{p.desc}</p>
+                  <div className="meta">
+                    {p.tags.map((t) => (
+                      <span key={t} className="tag">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <footer id="footer">
+        <div className="footer-inner">
+          <div className="footer-brand">
+            <a href="#hero" className="nav-logo">
+              <span className="footer-logo-text">SERENDIB GROUP OF COMPANIES</span>
+            </a>
+            <p>Building tomorrow's world, today.</p>
+            <div className="footer-socials">
+              <a href="#" aria-label="LinkedIn">
+                in
+              </a>
+              <a href="#" aria-label="Twitter">
+                𝕏
+              </a>
+              <a href="#" aria-label="YouTube">
+                ▶
+              </a>
+            </div>
+          </div>
+          <div className="footer-links">
+            <div className="footer-col">
+              <h5>Companies</h5>
+              <ul>
+                <li>
+                  <a href="#">Serendib Green Plantation</a>
+                </li>
+                <li>
+                  <a href="#">Serendib Travel & Tours</a>
+                </li>
+                <li>
+                  <a href="#">Serendib Auto Trading</a>
+                </li>
+                <li>
+                  <a href="#">Serendib Investment & Dev</a>
+                </li>
+                <li>
+                  <a href="#">Serendib Green Builders</a>
+                </li>
+                <li>
+                  <a href="#">Serendib Micro Finance</a>
+                </li>
+                <li>
+                  <a href="#">Diwya Spices</a>
+                </li>
+              </ul>
+            </div>
+            <div className="footer-col">
+              <h5>Company</h5>
+              <ul>
+                <li>
+                  <a href="#about">About Us</a>
+                </li>
+                <li>
+                  <a href="#overview">Company Overview</a>
+                </li>
+                <li>
+                  <a href="#">Investor Relations</a>
+                </li>
+                <li>
+                  <a href="#">Newsroom</a>
+                </li>
+              </ul>
+            </div>
+            <div className="footer-col">
+              <h5>Join Us</h5>
+              <ul>
+                <li>
+                  <a href="#">Careers</a>
+                </li>
+                <li>
+                  <a href="#">Serendib Academy</a>
+                </li>
+                <li>
+                  <a href="#">Internships</a>
+                </li>
+                <li>
+                  <a href="#">Partnerships</a>
+                </li>
+              </ul>
+            </div>
+            <div className="footer-col footer-map-col">
+              <h5>Our Locations</h5>
+              <p>Head Office and company network across Sri Lanka.</p>
+              <div className="footer-map">
+                <iframe
+                  title="Serendib Group Locations Map"
+                  src="https://www.google.com/maps?q=Colombo,Sri+Lanka&z=7&output=embed"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>© 2026 Serendib Group of Companies. All rights reserved.</span>
+          <span>
+            <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Cookies</a>
+          </span>
+        </div>
+      </footer>
+    </>
+  )
+}
+
