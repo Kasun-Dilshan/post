@@ -7,13 +7,14 @@ const TO_EMAIL = 'info@serendibgroups.com'
 export function ContactUsPage() {
   const navigate = useNavigate()
   const [fromEmail, setFromEmail] = useState('')
+  const [message, setMessage] = useState('')
   const [error, setError] = useState('')
 
   const mailtoHref = useMemo(() => {
     const subject = 'Contact Serendib Groups'
-    const body = `From: ${fromEmail || '(not provided)'}`
+    const body = `From: ${fromEmail || '(not provided)'}\n\nMessage:\n${message || '(no message)'}`
     return `mailto:${TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-  }, [fromEmail])
+  }, [fromEmail, message])
 
   function onSubmit(e) {
     e.preventDefault()
@@ -21,6 +22,12 @@ export function ContactUsPage() {
     const trimmed = fromEmail.trim()
     if (!trimmed) {
       setError('Please enter your email address.')
+      return
+    }
+
+    const trimmedMessage = message.trim()
+    if (!trimmedMessage) {
+      setError('Please enter your message.')
       return
     }
 
@@ -62,6 +69,20 @@ export function ContactUsPage() {
             placeholder="name@example.com"
             required
             autoComplete="email"
+          />
+
+          <label className="contact-label" htmlFor="message" style={{ marginTop: '1rem' }}>
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            className="contact-input"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type your message here..."
+            rows={6}
+            required
           />
 
           {error ? (
