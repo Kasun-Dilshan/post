@@ -222,38 +222,7 @@ export function PlantationPage() {
         }
       `}</style>
 
-      <div className="topbar">
-        <div className="container">
-          <div className="row">
-            <div className="items">
-              <div className="item pill">
-                <span>Phone</span>
-                <strong>+94 74 41 10 417</strong>
-              </div>
-              <div className="item pill">
-                <span>Email</span>
-                <strong>info@serendibgroups.com</strong>
-              </div>
-            </div>
-            <div className="social">
-              <a
-                className="pill"
-                href="https://web.facebook.com/profile.php?id=100063968831924&_rdc=1&_rdr#"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Facebook
-              </a>
-              <a className="pill" href="#" aria-label="X">
-                X
-              </a>
-              <a className="pill" href="#" aria-label="Instagram">
-                Instagram
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+    
 
       <header>
         <div className="container">
