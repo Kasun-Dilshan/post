@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import emailjs from '@emailjs/browser'
 import '../styles/group.css'
 
 const TO_EMAIL = 'info@serendibgroups.com'
@@ -11,9 +10,8 @@ export function ContactUsPage() {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [isSending, setIsSending] = useState(false)
 
-  async function onSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault()
 
     const trimmed = fromEmail.trim()
@@ -34,42 +32,10 @@ export function ContactUsPage() {
       return
     }
 
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-
-    if (!serviceId || !templateId || !publicKey) {
-      setError(
-        'Email service is not configured. Please set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY.'
-      )
-      return
-    }
-
     setError('')
-    setSuccess('')
-    setIsSending(true)
-    try {
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          to_email: TO_EMAIL,
-          from_email: trimmed,
-          message: trimmedMessage,
-        },
-        { publicKey }
-      )
-
-      setSuccess('Thank you! Your message has been sent.')
-      setFromEmail('')
-      setMessage('')
-    } catch {
-      setError(
-        'Sorry — we could not send your message right now. Please try again later, or email us directly at info@serendibgroups.com.'
-      )
-    } finally {
-      setIsSending(false)
-    }
+    setSuccess('Thank you! We received your message.')
+    setFromEmail('')
+    setMessage('')
   }
 
   return (
@@ -126,8 +92,8 @@ export function ContactUsPage() {
             <button type="button" className="btn-ghost" onClick={() => navigate('/')}>
               Back Home
             </button>
-            <button type="submit" className="btn-primary" disabled={isSending}>
-              {isSending ? 'Sending…' : 'Send'}
+            <button type="submit" className="btn-primary">
+              Send
             </button>
           </div>
         </form>
