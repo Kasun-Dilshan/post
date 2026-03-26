@@ -468,7 +468,7 @@ export function GroupHomePage() {
         alt: 'Serendib Green Plantation',
         tag: 'Agriculture',
         title: 'Serendib Green Plantation',
-        desc: 'Sustainable cultivation and export Vannila.',
+        desc: 'Sustainable cultivation and export Vanilla.',
         stats: ['Est. 1998', 'Organic Certified'],
         onClick: onOpenPlantation,
       },
