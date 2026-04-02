@@ -420,7 +420,7 @@ export function PlantationPage() {
             </div>
             <div className="media">
               <img
-                src="/site-assets/plantation/company-606x403.jpg"
+                src="/site-assets/plantation/company-overview.png"
                 alt="Lush green crop fields"
               />
             </div>
@@ -433,7 +433,7 @@ export function PlantationPage() {
           <div className="grid-2">
             <div className="media">
               <img
-                src="/site-assets/plantation/mission.jpg"
+                src="/site-assets/plantation/mission.png"
                 alt="Agricultural landscape at sunrise"
               />
             </div>
@@ -483,7 +483,7 @@ export function PlantationPage() {
           {[
             {
               title: 'Vanilla',
-              bg: '/site-assets/plantation/project-vanilla.jpg',
+              bg: '/site-assets/plantation/project-vanilla.png',
               desc: 'Vanilla is a flavorful spice derived from the pods of the vanilla orchid (genus Vanilla), primarily Vanilla planifolia.',
               tags: ['Specialty crop', 'High value'],
             },
@@ -507,7 +507,7 @@ export function PlantationPage() {
             },
             {
               title: 'Spices',
-              bg: '/site-assets/plantation/project-spices.jpg',
+              bg: '/site-assets/plantation/project-spices.png',
               desc: 'Sri Lankan spices are renowned for their rich, aromatic flavors and are a key element in the country’s vibrant cuisine.',
               tags: ['Sri Lanka', 'Aromatic'],
             },
