@@ -365,13 +365,13 @@ export function PlantationPage() {
           <div className="grid-2">
             <div className="media">
               <img
-                src="/site-assets/plantation/about-main.png"
-                alt="Plantation image"
+                src="/site-assets/plantation/about-main.jpg"
+                alt="Hands planting seedlings in rich soil"
               />
               <div className="badge-img">
                 <img
-                  src="/site-assets/plantation/about-badge.png"
-                  alt="Badge image"
+                  src="/site-assets/plantation/about-badge.jpg"
+                  alt="Young plant sprouting"
                 />
               </div>
             </div>
@@ -420,8 +420,8 @@ export function PlantationPage() {
             </div>
             <div className="media">
               <img
-                src="/site-assets/plantation/company-606x403.png"
-                alt="Company overview image"
+                src="/site-assets/plantation/company-606x403.jpg"
+                alt="Lush green crop fields"
               />
             </div>
           </div>
@@ -433,8 +433,8 @@ export function PlantationPage() {
           <div className="grid-2">
             <div className="media">
               <img
-                src="/site-assets/plantation/company-606x403.png"
-                alt="Mission image"
+                src="/site-assets/plantation/mission.jpg"
+                alt="Agricultural landscape at sunrise"
               />
             </div>
             <div className="card">
@@ -483,7 +483,7 @@ export function PlantationPage() {
           {[
             {
               title: 'Vanilla',
-              bg: '/site-assets/plantation/project-vanilla.png',
+              bg: '/site-assets/plantation/project-vanilla.jpg',
               desc: 'Vanilla is a flavorful spice derived from the pods of the vanilla orchid (genus Vanilla), primarily Vanilla planifolia.',
               tags: ['Specialty crop', 'High value'],
             },
@@ -495,7 +495,7 @@ export function PlantationPage() {
             },
             {
               title: 'Watermelon',
-              bg: '/site-assets/plantation/project-watermelon.webp',
+              bg: '/site-assets/plantation/project-watermelon.jpg',
               desc: "Watermelon is a refreshing, juicy fruit with a thick green rind and sweet, red or pink flesh filled with black seeds.",
               tags: ['Seasonal', 'High yield'],
             },
@@ -507,7 +507,7 @@ export function PlantationPage() {
             },
             {
               title: 'Spices',
-              bg: '/site-assets/plantation/project-spices.png',
+              bg: '/site-assets/plantation/project-spices.jpg',
               desc: 'Sri Lankan spices are renowned for their rich, aromatic flavors and are a key element in the country’s vibrant cuisine.',
               tags: ['Sri Lanka', 'Aromatic'],
             },
