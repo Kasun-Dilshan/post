@@ -1,4 +1,37 @@
+import { useCallback, useRef, useState } from 'react'
+import JSZip from 'jszip'
+import { PLANTATION_HERO_BG, PLANTATION_IMAGE_ASSETS } from '../data/plantationPhotos.js'
+
 export function PlantationPage() {
+  const [zipBusy, setZipBusy] = useState(false)
+  const zipLock = useRef(false)
+
+  const downloadAllPhotos = useCallback(async () => {
+    if (zipLock.current) return
+    zipLock.current = true
+    setZipBusy(true)
+    try {
+      const zip = new JSZip()
+      for (const { path, filename } of PLANTATION_IMAGE_ASSETS) {
+        const res = await fetch(path)
+        if (!res.ok) continue
+        zip.file(filename, await res.blob())
+      }
+      const blob = await zip.generateAsync({ type: 'blob' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'serendib-plantation-photos.zip'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+    } finally {
+      zipLock.current = false
+      setZipBusy(false)
+    }
+  }, [])
+
   return (
     <>
       <style>{`
@@ -58,7 +91,7 @@ export function PlantationPage() {
           align-items:flex-end;
           background:
             linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.30) 55%, rgba(248,251,243,1) 100%),
-            url("https://serendibgroups.com/wp-content/uploads/2024/11/slider_1.jpg") center/cover no-repeat;
+            url("${PLANTATION_HERO_BG}") center/cover no-repeat;
           padding: 70px 0 26px;
         }
         .hero .inner{padding: 0 0 18px}
@@ -311,6 +344,18 @@ export function PlantationPage() {
                 <span>Export-ready Produce</span>
               </div>
             </div>
+
+            <div className="actions">
+              <button
+                type="button"
+                className="btn primary"
+                onClick={downloadAllPhotos}
+                disabled={zipBusy}
+                aria-busy={zipBusy}
+              >
+                {zipBusy ? 'Preparing download…' : 'Download all photos'}
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -320,12 +365,12 @@ export function PlantationPage() {
           <div className="grid-2">
             <div className="media">
               <img
-                src="https://serendibgroups.com/wp-content/uploads/2025/04/2-1-606x403.png"
+                src="/site-assets/plantation/about-main.png"
                 alt="Plantation image"
               />
               <div className="badge-img">
                 <img
-                  src="https://serendibgroups.com/wp-content/uploads/2024/11/3-1-337x337.png"
+                  src="/site-assets/plantation/about-badge.png"
                   alt="Badge image"
                 />
               </div>
@@ -375,7 +420,7 @@ export function PlantationPage() {
             </div>
             <div className="media">
               <img
-                src="https://serendibgroups.com/wp-content/uploads/2024/11/4-1-606x403.png"
+                src="/site-assets/plantation/company-606x403.png"
                 alt="Company overview image"
               />
             </div>
@@ -388,7 +433,7 @@ export function PlantationPage() {
           <div className="grid-2">
             <div className="media">
               <img
-                src="https://serendibgroups.com/wp-content/uploads/2024/11/4-1-606x403.png"
+                src="/site-assets/plantation/company-606x403.png"
                 alt="Mission image"
               />
             </div>
@@ -438,31 +483,31 @@ export function PlantationPage() {
           {[
             {
               title: 'Vanilla',
-              bg: 'https://serendibgroups.com/wp-content/uploads/2024/11/3-1.png',
+              bg: '/site-assets/plantation/project-vanilla.png',
               desc: 'Vanilla is a flavorful spice derived from the pods of the vanilla orchid (genus Vanilla), primarily Vanilla planifolia.',
               tags: ['Specialty crop', 'High value'],
             },
             {
               title: 'Banana',
-              bg: 'https://serendibgroups.com/wp-content/uploads/2024/11/banana-scaled-1.jpg',
+              bg: '/site-assets/plantation/project-banana.jpg',
               desc: 'Bananas are a tropical fruit from the Musa genus, known for their elongated shape, soft texture, and sweet flavor.',
               tags: ['Tropical fruit', 'Quality focused'],
             },
             {
               title: 'Watermelon',
-              bg: 'https://serendibgroups.com/wp-content/uploads/2024/11/DALL%C2%B7E-2024-10-25-14.29.43-A-vibrant-and-juicy-watermelon-sliced-open-to-reveal-its-bright-red-flesh-and-black-seeds-set-on-a-light-wooden-table-with-a-rustic-background.-The-w-1-e1746045831372.webp',
+              bg: '/site-assets/plantation/project-watermelon.webp',
               desc: "Watermelon is a refreshing, juicy fruit with a thick green rind and sweet, red or pink flesh filled with black seeds.",
               tags: ['Seasonal', 'High yield'],
             },
             {
               title: 'Gherkins',
-              bg: 'https://serendibgroups.com/wp-content/uploads/2024/11/gherkins-e1746045903545.jpg',
+              bg: '/site-assets/plantation/project-gherkins.jpg',
               desc: 'Gherkins are small, crisp cucumbers, typically harvested when immature and pickled in brine or vinegar.',
               tags: ['Export ready', 'Processing'],
             },
             {
               title: 'Spices',
-              bg: 'https://serendibgroups.com/wp-content/uploads/2025/04/6.png',
+              bg: '/site-assets/plantation/project-spices.png',
               desc: 'Sri Lankan spices are renowned for their rich, aromatic flavors and are a key element in the country’s vibrant cuisine.',
               tags: ['Sri Lanka', 'Aromatic'],
             },
