@@ -20,6 +20,7 @@ export default function App() {
         <Route path="/investments/silver" element={<GreenSilverSavingPlanPage />} />
         <Route path="/investments/gold" element={<GoldSavingPlanPage />} />
         <Route path="/contact" element={<ContactUsPage />} />
+        <Route path="/investmerts" element={<Navigate to="/investments" replace />} />
 
         {/* Legacy static .html deep links */}
         <Route path="/index.html" element={<Navigate to="/" replace />} />
