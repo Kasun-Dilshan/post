@@ -1,37 +1,6 @@
-import { useCallback, useRef, useState } from 'react'
-import JSZip from 'jszip'
-import { PLANTATION_HERO_BG, PLANTATION_IMAGE_ASSETS } from '../data/plantationPhotos.js'
+import { PLANTATION_HERO_BG } from '../data/plantationPhotos.js'
 
 export function PlantationPage() {
-  const [zipBusy, setZipBusy] = useState(false)
-  const zipLock = useRef(false)
-
-  const downloadAllPhotos = useCallback(async () => {
-    if (zipLock.current) return
-    zipLock.current = true
-    setZipBusy(true)
-    try {
-      const zip = new JSZip()
-      for (const { path, filename } of PLANTATION_IMAGE_ASSETS) {
-        const res = await fetch(path)
-        if (!res.ok) continue
-        zip.file(filename, await res.blob())
-      }
-      const blob = await zip.generateAsync({ type: 'blob' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'serendib-plantation-photos.zip'
-      document.body.appendChild(a)
-      a.click()
-      a.remove()
-      URL.revokeObjectURL(url)
-    } finally {
-      zipLock.current = false
-      setZipBusy(false)
-    }
-  }, [])
-
   return (
     <>
       <style>{`
@@ -98,7 +67,6 @@ export function PlantationPage() {
         .hero .kicker{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px}
         .hero h1{margin:14px 0 6px;color:#fff;font-size:56px;line-height:1.05;letter-spacing:6px;text-transform:uppercase}
         .hero h2{margin:0;color:#fff;font-size:28px;letter-spacing:6px;text-transform:uppercase;font-weight:700;opacity:.95}
-        .hero .actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
         .hero .sub{margin-top:14px;max-width:720px;color:rgba(255,255,255,.85);font-weight:600;line-height:1.7}
 
         .stats{
@@ -345,17 +313,6 @@ export function PlantationPage() {
               </div>
             </div>
 
-            <div className="actions">
-              <button
-                type="button"
-                className="btn primary"
-                onClick={downloadAllPhotos}
-                disabled={zipBusy}
-                aria-busy={zipBusy}
-              >
-                {zipBusy ? 'Preparing download…' : 'Download all photos'}
-              </button>
-            </div>
           </div>
         </div>
       </section>

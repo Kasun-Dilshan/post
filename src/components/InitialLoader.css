@@ -1,0 +1,235 @@
+/* Serendib — initial visit splash */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.initial-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: 'Outfit', system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 100%, rgba(22, 163, 74, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 90% 70% at 10% 20%, rgba(16, 185, 129, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 90% 30%, rgba(5, 150, 105, 0.18) 0%, transparent 45%),
+    linear-gradient(165deg, #04120a 0%, #0a1f14 35%, #061510 100%);
+  clip-path: circle(150% at 50% 50%);
+  transition: filter 0.3s ease;
+}
+
+.initial-loader::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(
+    from 120deg at 50% 50%,
+    transparent 0deg,
+    rgba(34, 197, 94, 0.06) 60deg,
+    transparent 120deg,
+    rgba(16, 185, 129, 0.05) 200deg,
+    transparent 280deg,
+    rgba(5, 150, 105, 0.05) 320deg,
+    transparent 360deg
+  );
+  animation: initial-loader-rotate 22s linear infinite;
+  pointer-events: none;
+}
+
+.initial-loader::after {
+  content: '';
+  position: absolute;
+  width: min(90vw, 520px);
+  height: min(90vw, 520px);
+  border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    rgba(34, 197, 94, 0.12) 0%,
+    transparent 55%
+  );
+  filter: blur(40px);
+  animation: initial-loader-blob 14s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes initial-loader-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes initial-loader-blob {
+  0%,
+  100% {
+    transform: translate(-8%, 4%) scale(1) rotate(0deg);
+    border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
+  }
+  33% {
+    transform: translate(6%, -6%) scale(1.08) rotate(120deg);
+    border-radius: 58% 42% 48% 52% / 55% 48% 45% 55%;
+  }
+  66% {
+    transform: translate(-4%, -10%) scale(0.95) rotate(240deg);
+    border-radius: 48% 52% 58% 42% / 42% 55% 52% 48%;
+  }
+}
+
+.initial-loader__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.initial-loader__ring {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  animation: initial-loader-ring-pulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.initial-loader__ring--2 {
+  width: 160px;
+  height: 160px;
+  border-color: rgba(16, 185, 129, 0.1);
+  animation-delay: 0.4s;
+}
+
+@keyframes initial-loader-ring-pulse {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.initial-loader__dots {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.55rem;
+  height: 28px;
+}
+
+.initial-loader__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #4ade80 0%, #16a34a 45%, #059669 100%);
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.55),
+    0 0 40px rgba(16, 185, 129, 0.25);
+  animation: initial-loader-dot-bounce 0.9s ease-in-out infinite;
+}
+
+.initial-loader__dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.initial-loader__dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.initial-loader__dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes initial-loader-dot-bounce {
+  0%,
+  70%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    transform: translateY(-14px) scale(1.08);
+  }
+}
+
+.initial-loader__wordmark {
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.45);
+  animation: initial-loader-fade-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes initial-loader-fade-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Exit: iris shrink + soft lift */
+.initial-loader--exiting {
+  animation: initial-loader-exit 1s cubic-bezier(0.65, 0, 0.25, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes initial-loader-exit {
+  0% {
+    clip-path: circle(150% at 50% 50%);
+    filter: brightness(1);
+  }
+  100% {
+    clip-path: circle(0% at 50% 50%);
+    filter: brightness(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .initial-loader::before,
+  .initial-loader::after,
+  .initial-loader__ring,
+  .initial-loader__ring--2 {
+    animation: none;
+  }
+
+  .initial-loader__dot {
+    animation: none;
+    opacity: 0.9;
+  }
+
+  .initial-loader__wordmark {
+    animation: none;
+    opacity: 0.6;
+  }
+
+  .initial-loader--exiting {
+    animation: initial-loader-exit-reduced 0.5s ease forwards;
+  }
+
+  @keyframes initial-loader-exit-reduced {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}

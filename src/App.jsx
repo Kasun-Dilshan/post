@@ -1,4 +1,7 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { CookieConsent } from './components/CookieConsent.jsx'
+import { InitialLoader } from './components/InitialLoader.jsx'
 import { GroupHomePage } from './pages/GroupHomePage.jsx'
 import { PlantationPage } from './pages/PlantationPage.jsx'
 import { InvestmentsPage } from './pages/InvestmentsPage.jsx'
@@ -8,9 +11,56 @@ import { GreenSilverSavingPlanPage } from './pages/GreenSilverSavingPlanPage.jsx
 import { GoldSavingPlanPage } from './pages/GoldSavingPlanPage.jsx'
 import { ContactUsPage } from './pages/ContactUsPage.jsx'
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
+
+const SPLASH_MIN_MS = 2200
+
 export default function App() {
+  const [splashPhase, setSplashPhase] = useState('loading')
+
+  useEffect(() => {
+    const start = performance.now()
+    let cancelled = false
+    let timeoutId = 0
+
+    const maybeFinish = () => {
+      if (cancelled) return
+      const elapsed = performance.now() - start
+      const wait = Math.max(0, SPLASH_MIN_MS - elapsed)
+      timeoutId = window.setTimeout(() => {
+        if (!cancelled) setSplashPhase('exiting')
+      }, wait)
+    }
+
+    if (document.readyState === 'complete') {
+      maybeFinish()
+    } else {
+      window.addEventListener('load', maybeFinish, { once: true })
+    }
+
+    return () => {
+      cancelled = true
+      window.clearTimeout(timeoutId)
+      window.removeEventListener('load', maybeFinish)
+    }
+  }, [])
+
   return (
     <BrowserRouter>
+      <ScrollToTop />
+      {splashPhase !== 'done' && (
+        <InitialLoader
+          exiting={splashPhase === 'exiting'}
+          onExitComplete={() => setSplashPhase('done')}
+        />
+      )}
+      <CookieConsent />
       <Routes>
         <Route path="/" element={<GroupHomePage />} />
         <Route path="/plantation" element={<PlantationPage />} />

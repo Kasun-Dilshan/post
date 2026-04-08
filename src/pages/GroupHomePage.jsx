@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import * as THREE from 'three'
+import { HomeHeroCarousel } from '../components/HomeHeroCarousel.jsx'
 import '../styles/group.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -238,6 +239,7 @@ function useGroupInteractions() {
     counters.forEach((c) => observer.observe(c))
 
     // Carousel
+    const track = document.getElementById('companies-track')
     const inner = document.getElementById('companies-inner')
     const prevBtn = document.getElementById('cnav-prev')
     const nextBtn = document.getElementById('cnav-next')
@@ -250,13 +252,15 @@ function useGroupInteractions() {
     const totalCards = cards.length
 
     const getCardWidth = () => {
-      if (cards[0]) {
+      if (cards[0] && inner) {
         const style = getComputedStyle(inner)
         const gap = parseFloat(style.gap) || 24
         return cards[0].offsetWidth + gap
       }
       return 384
     }
+
+    const maxOffset = () => Math.max(0, (totalCards - 1) * getCardWidth())
 
     const goTo = (idx) => {
       if (!inner || totalCards === 0) return
@@ -287,16 +291,90 @@ function useGroupInteractions() {
 
     // Autoplay disabled to keep Plantation card first.
 
-    let startX = 0
+    /** Mobile: drag cards horizontally; ignore mostly-vertical gestures so the page can scroll. */
+    let touchStartX = 0
+    let touchStartY = 0
+    let dragBaseOffset = 0
+    let dragAxisLocked = null
+    let suppressCarouselClick = false
+
+    const applyDragTransform = (offsetPx) => {
+      if (!inner) return
+      const clamped = Math.max(0, Math.min(offsetPx, maxOffset()))
+      inner.style.transform = `translateX(-${clamped}px)`
+    }
+
     const onTouchStart = (e) => {
-      startX = e.touches[0].clientX
+      if (!inner || !track || e.touches.length !== 1) return
+      touchStartX = e.touches[0].clientX
+      touchStartY = e.touches[0].clientY
+      dragBaseOffset = current * getCardWidth()
+      dragAxisLocked = null
     }
+
+    const onTouchMove = (e) => {
+      if (!inner || !track || e.touches.length !== 1) return
+      const x = e.touches[0].clientX
+      const y = e.touches[0].clientY
+      const dx = x - touchStartX
+      const dy = y - touchStartY
+
+      if (dragAxisLocked === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        dragAxisLocked = Math.abs(dx) >= Math.abs(dy) * 1.1 ? 'x' : 'y'
+        if (dragAxisLocked === 'x') inner.classList.add('is-dragging')
+      }
+      if (dragAxisLocked !== 'x') return
+
+      applyDragTransform(dragBaseOffset - dx)
+    }
+
     const onTouchEnd = (e) => {
-      const diff = startX - e.changedTouches[0].clientX
-      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1)
+      if (!inner || !track) return
+      inner.classList.remove('is-dragging')
+
+      const t = e.changedTouches[0]
+      const dx = t.clientX - touchStartX
+      const dy = t.clientY - touchStartY
+      const wasHorizontal = dragAxisLocked === 'x' || (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.15)
+
+      dragAxisLocked = null
+
+      if (!wasHorizontal || totalCards === 0) {
+        goTo(current)
+        return
+      }
+
+      const w = getCardWidth()
+      const rawOffset = dragBaseOffset - dx
+      const clamped = Math.max(0, Math.min(rawOffset, maxOffset()))
+      let snapIndex = Math.round(clamped / w)
+      if (Number.isNaN(snapIndex)) snapIndex = current
+      snapIndex = Math.max(0, Math.min(snapIndex, totalCards - 1))
+
+      const navigated = snapIndex !== current
+      if (navigated) {
+        suppressCarouselClick = true
+        window.setTimeout(() => {
+          suppressCarouselClick = false
+        }, 450)
+        e.preventDefault()
+      }
+
+      goTo(snapIndex)
     }
-    inner?.addEventListener('touchstart', onTouchStart, { passive: true })
-    inner?.addEventListener('touchend', onTouchEnd)
+
+    const onCarouselClickCapture = (e) => {
+      if (suppressCarouselClick) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+
+    track?.addEventListener('touchstart', onTouchStart, { passive: true })
+    track?.addEventListener('touchmove', onTouchMove, { passive: true })
+    track?.addEventListener('touchend', onTouchEnd, { passive: false })
+    track?.addEventListener('touchcancel', onTouchEnd, { passive: false })
+    track?.addEventListener('click', onCarouselClickCapture, true)
 
     const tiltHandlers = []
     cards.forEach((card) => {
@@ -435,8 +513,12 @@ function useGroupInteractions() {
       nextBtn?.removeEventListener('click', onNext)
       if (autoTimer) clearInterval(autoTimer)
       window.removeEventListener('scroll', onCompaniesScrollSnap)
-      inner?.removeEventListener('touchstart', onTouchStart)
-      inner?.removeEventListener('touchend', onTouchEnd)
+      track?.removeEventListener('touchstart', onTouchStart)
+      track?.removeEventListener('touchmove', onTouchMove)
+      track?.removeEventListener('touchend', onTouchEnd)
+      track?.removeEventListener('touchcancel', onTouchEnd)
+      track?.removeEventListener('click', onCarouselClickCapture, true)
+      inner?.classList.remove('is-dragging')
       tiltHandlers.forEach(([card, onMove, onLeaveCard]) => {
         card.removeEventListener('mousemove', onMove)
         card.removeEventListener('mouseleave', onLeaveCard)
@@ -535,6 +617,65 @@ export function GroupHomePage() {
     [onOpenPlantation],
   )
 
+  const awards = useMemo(
+    () => [
+      {
+        img: '/site-assets/awards/peoples-pinnacle-sustainable-agriculture-2025.png',
+        title: "People's Pinnacle 2025",
+        subtitle: 'Excellence in Sustainable Agriculture & Investment Plan of the Year',
+      },
+      {
+        img: '/site-assets/awards/golden-feather-awards-2025.png',
+        title: 'Golden Feather Awards 2025',
+        subtitle: 'Platinum Awards',
+      },
+      {
+        img: '/site-assets/awards/peoples-pinnacle-business-leadership-2025.png',
+        title: "People's Pinnacle 2025",
+        subtitle: 'Excellence in Business Leadership 2025',
+      },
+    ],
+    [],
+  )
+
+  const qualityCertificates = useMemo(
+    () => [
+      { img: '/site-assets/awards/ascb-accreditation.png', label: 'ASCB Accreditation' },
+      { img: '/site-assets/awards/iso-22000-2018-certified.png', label: 'ISO 22000:2018' },
+      { img: '/site-assets/awards/iso-9001-2015.png', label: 'ISO 9001:2015' },
+      { img: '/site-assets/awards/halal-food-certified.png', label: 'Halal Certified' },
+      { img: '/site-assets/awards/irqao-logo.png', label: 'IRQAO' },
+      { img: '/site-assets/awards/eicpl-logo.png', label: 'EICPL' },
+    ],
+    [],
+  )
+
+  const heroSlides = useMemo(
+    () => [
+      {
+        id: 'vanilla-clean-1',
+        bgSrc: '/site-assets/home-carousel/vanilla-clean-1.png',
+      },
+      {
+        id: 'vanilla-clean-2',
+        bgSrc: '/site-assets/home-carousel/vanilla-clean-2.png',
+      },
+      {
+        id: 'vanilla-3',
+        bgSrc: '/site-assets/home-carousel/vanilla-3.png',
+      },
+      {
+        id: 'vanilla-4',
+        bgSrc: '/site-assets/home-carousel/vanilla-4.png',
+      },
+      {
+        id: 'vanilla-5',
+        bgSrc: '/site-assets/home-carousel/vanilla-5.png',
+      },
+    ],
+    [onOpenPlantation],
+  )
+
   return (
     <>
       <canvas id="bg-canvas" />
@@ -542,6 +683,7 @@ export function GroupHomePage() {
       <nav id="navbar">
         <div className="nav-inner">
           <a href="#hero" className="nav-logo">
+            <img src="/site-assets/serendib_main_logo.png" alt="Serendib Green Plantation" decoding="async" />
             <span style={{ fontWeight: 800, letterSpacing: '0.08em', color: 'var(--accent-1)' }}>
               SERENDIB GREEN PLANTATION
             </span>
@@ -552,6 +694,9 @@ export function GroupHomePage() {
             </li>
             <li>
               <a href="#companies">Companies</a>
+            </li>
+            <li>
+              <a href="#awards">Awards</a>
             </li>
             <li>
               <a href="#presence">Global</a>
@@ -567,6 +712,7 @@ export function GroupHomePage() {
       </nav>
 
       <section id="hero">
+        <HomeHeroCarousel slides={heroSlides} />
         <div className="hero-content">
           <div className="hero-tag reveal-up" />
           <h1 className="hero-title reveal-up">
@@ -589,14 +735,6 @@ export function GroupHomePage() {
               Learn More ↓
             </a>
           </div>
-        </div>
-        <div className="hero-logo-wrapper">
-          <img
-            src="/site-assets/serendib_main_logo.png"
-            alt="Serendib Group Logo"
-            fetchpriority="high"
-            decoding="async"
-          />
         </div>
         <div className="scroll-hint">
           <span>Scroll to explore</span>
@@ -918,7 +1056,50 @@ export function GroupHomePage() {
         </div>
       </section>
 
-     
+      <section id="awards">
+        <div className="section-header">
+          <div className="section-tag">RECOGNITION</div>
+          <h2 className="section-title">
+            Awards &amp;
+            <br />
+            <span className="gradient-text">Achievements</span>
+          </h2>
+          <p className="section-desc">
+            Celebrating milestones that reflect our commitment to leadership, sustainability, and lasting value.
+          </p>
+        </div>
+
+        <div className="awards-inner">
+          {awards.map((a, i) => (
+            <figure className="award-card reveal-up" style={{ '--delay': `${i * 0.08}s` }} key={a.img}>
+              <div className="award-media">
+                <img src={a.img} alt={`${a.title} — ${a.subtitle}`} loading="lazy" decoding="async" />
+              </div>
+              <figcaption className="award-meta">
+                <div className="award-title">{a.title}</div>
+                <div className="award-subtitle">{a.subtitle}</div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div className="certs-wrap">
+          <div className="certs-header reveal-up" style={{ '--delay': `0.12s` }}>
+            <div className="certs-title">Quality Certificates</div>
+            <div className="certs-subtitle">Our company quality certificates logos</div>
+          </div>
+          <div className="certs-grid">
+            {qualityCertificates.map((c, i) => (
+              <figure className="cert-card reveal-up" style={{ '--delay': `${0.14 + i * 0.04}s` }} key={c.img}>
+                <div className="cert-media">
+                  <img src={c.img} alt={c.label} loading="lazy" decoding="async" />
+                </div>
+                <figcaption className="cert-label">{c.label}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <footer id="footer">
         <div className="footer-inner">
